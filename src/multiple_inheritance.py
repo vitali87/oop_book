@@ -1,5 +1,5 @@
 from typing_extensions import Protocol
-from Contact import Contact
+from src.contact import Contact
 
 class Emailable(Protocol):
     email: str

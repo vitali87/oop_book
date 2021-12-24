@@ -1,5 +1,5 @@
-from src.Contact import Contact
-from src.AddressHolder import AddressHolder
+from src.contact import Contact
+from src.address_holder import AddressHolder
 
 class Friend(Contact,AddressHolder):
     def __init__(

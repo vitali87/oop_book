@@ -1,4 +1,4 @@
-from src.model.KnownSample import KnownSample
+from src.model.known_sample import KnownSample
 from typing import cast
 
 class TestingKnownSample(KnownSample):

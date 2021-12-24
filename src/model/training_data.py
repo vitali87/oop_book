@@ -1,9 +1,9 @@
 import datetime
 from typing import List, Iterable
-from src.model.Sample import Sample
-from src.model.TrainingKnownSample import TrainingKnownSample2
-from src.model.TestingKnownSample import TestingKnownSample
-from src.model.Hyperparameter import Hyperparameter
+from src.model.sample import Sample
+from src.model.training_known_sample import TrainingKnownSample2
+from src.model.testing_known_sample import TestingKnownSample
+from src.model.hyperparameter import Hyperparameter
 from src.own_exceptions import InvalidSampleError
 
 

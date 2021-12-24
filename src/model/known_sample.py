@@ -1,6 +1,6 @@
-from src.model.Sample import Sample
+from src.model.sample import Sample
 from src.own_exceptions import InvalidSampleError
-from src.model.Species import Domain
+from src.model.species import Domain
 
 species = Domain({"Iris-setos","Iris-versicolour","Irsi-virginica"})
 
