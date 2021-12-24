@@ -1,4 +1,4 @@
-from src.model.Sample import Sample
+from src.model.sample import Sample
 from math import hypot
 
 class Distance:

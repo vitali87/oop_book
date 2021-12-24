@@ -1,4 +1,4 @@
-from Contact import Contact
+from src.contact import Contact
 
 class Supplier(Contact):
     def order(self, order: "Order") -> None:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from src.Contact import ContactList
+from src.contact import ContactList
 
 class Contact:
     all_contacts = ContactList()
