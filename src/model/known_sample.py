@@ -1,3 +1,6 @@
+from typing import Optional
+
+from src.model.purpose import Purpose
 from src.model.sample import Sample
 from src.own_exceptions import InvalidSampleError
 from src.model.species import Domain
@@ -88,3 +91,39 @@ class KnownSample2(Sample):
             f"species = {self.species!r}"
             f")"
         )
+
+
+class KnownSample3(Sample):
+    def __init__(
+            self,
+            sepal_length: float,
+            sepal_width: float,
+            petal_length: float,
+            petal_width: float,
+            purpose: int,
+            species: str,
+    ) -> None:
+        purpose_enum = Purpose(purpose)
+        if purpose_enum not in {Purpose.Training,Purpose.Testing}:
+            raise ValueError(
+                f"Invalid purpose: {purpose!r}: {purpose_enum}"
+            )
+        super().__init__(sepal_length=sepal_length,
+                         petal_length=petal_length,
+                         sepal_width=sepal_width,
+                         petal_width=petal_width,
+                         )
+        self.purpose = purpose
+        self.species = species
+        self._classification: Optional[str] = None
+
+    def matches(self) -> bool:
+        return self.species == self.classification
+
+    @property
+    def classification(self) -> Optional[str]:
+        if self.purpose == Purpose.Testing:
+            return self._classification
+        else:
+            raise AttributeError(f"Training samples "
+                                 f"have no classification")
