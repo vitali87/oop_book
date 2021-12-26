@@ -62,3 +62,6 @@ class InvalidSampleError(ValueError):
 
 class OutlierError(ValueError):
     """Value lies outside the expected range."""
+
+class BadSampleRow(ValueError):
+    pass
