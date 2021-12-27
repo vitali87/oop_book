@@ -15,7 +15,7 @@ class Sample:
         self.petal_length = petal_length
         self.petal_width = petal_width
         self.species = species
-        self.classification: Optional[str] = None
+        self.classification: Optional[str]# = None
 
     def __repr__(self) -> str:
         if self.species is None:
