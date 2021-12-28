@@ -101,7 +101,7 @@ def _save(im, fp, filename, save_all=False):
                 # It is a single frame image
                 pass
         numberOfPages += im_numberOfPages
-        for i in range(im_numberOfPages):
+        for _ in range(im_numberOfPages):
             image_refs.append(existing_pdf.next_object_id(0))
             page_refs.append(existing_pdf.next_object_id(0))
             contents_refs.append(existing_pdf.next_object_id(0))

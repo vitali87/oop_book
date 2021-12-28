@@ -37,7 +37,7 @@ MODES = {
 
 
 def _accept(prefix):
-    return prefix[0:1] == b"P" and prefix[1] in b"0456y"
+    return prefix[:1] == b"P" and prefix[1] in b"0456y"
 
 
 ##
@@ -103,15 +103,10 @@ class PpmImageFile(ImageFile.ImageFile):
             elif ix == 2:
                 # maxgrey
                 if s > 255:
-                    if not mode == "L":
+                    if mode != "L":
                         raise ValueError(f"Too many colors for band: {s}")
-                    if s < 2 ** 16:
-                        self.mode = "I"
-                        rawmode = "I;16B"
-                    else:
-                        self.mode = "I"
-                        rawmode = "I;32B"
-
+                    rawmode = "I;16B" if s < 2 ** 16 else "I;32B"
+                    self.mode = "I"
         self._size = xsize, ysize
         self.tile = [("raw", (0, 0, xsize, ysize), self.fp.tell(), (rawmode, 0, 1))]
 
@@ -137,8 +132,6 @@ def _save(im, fp, filename):
     else:
         raise OSError(f"cannot write mode {im.mode} as PPM")
     fp.write(head + ("\n%d %d\n" % im.size).encode("ascii"))
-    if head == b"P6":
-        fp.write(b"255\n")
     if head == b"P5":
         if rawmode == "L":
             fp.write(b"255\n")
@@ -146,6 +139,8 @@ def _save(im, fp, filename):
             fp.write(b"65535\n")
         elif rawmode == "I;32B":
             fp.write(b"2147483648\n")
+    elif head == b"P6":
+        fp.write(b"255\n")
     ImageFile._save(im, fp, [("raw", (0, 0) + im.size, 0, (rawmode, 0, 1))])
 
     # ALTERNATIVE: save via builtin debug function

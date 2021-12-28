@@ -90,10 +90,7 @@ def Ghostscript(tile, size, fp, scale=1, transparency=False):
         os.close(in_fd)
         infile = infile_temp
 
-        # Ignore length and offset!
-        # Ghostscript can read it
-        # Copy whole file to read in Ghostscript
-        with open(infile_temp, "wb") as f:
+        with open(infile, "wb") as f:
             # fetch length of fp
             fp.seek(0, io.SEEK_END)
             fsize = fp.tell()
@@ -263,11 +260,7 @@ class EpsImageFile(ImageFile.ImageFile):
                             self.info[k[:8]] = k[9:]
                         else:
                             self.info[k] = ""
-                    elif s[0] == "%":
-                        # handle non-DSC PostScript comments that some
-                        # tools mistakenly put in the Comments section
-                        pass
-                    else:
+                    elif s[0] != "%":
                         raise OSError("bad EPS header")
 
             s_raw = fp.readline()

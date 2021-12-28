@@ -171,7 +171,7 @@ def _save(im, fp, filename):
 
     flags = 0
     if im.mode == "P" and "custom-colormap" in im.info:
-        flags = flags & _FLAGS["custom-colormap"]
+        flags &= _FLAGS["custom-colormap"]
         colormapsize = 4 * 256 + 2
         colormapmode = im.palette.mode
         colormap = im.getdata().getpalette()

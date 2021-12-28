@@ -302,7 +302,7 @@ def _maketile(file, mode, bbox, channels):
             if mode == "CMYK":
                 layer += ";I"
             tile.append(("packbits", bbox, offset, layer))
-            for y in range(ysize):
+            for _ in range(ysize):
                 offset = offset + i16(bytecount, i)
                 i += 2
 

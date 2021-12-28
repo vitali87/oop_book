@@ -307,16 +307,15 @@ class PdfStream:
             filter = self.dictionary.Filter
         except AttributeError:
             return self.buf
-        if filter == b"FlateDecode":
-            try:
-                expected_length = self.dictionary.DL
-            except AttributeError:
-                expected_length = self.dictionary.Length
-            return zlib.decompress(self.buf, bufsize=int(expected_length))
-        else:
+        if filter != b"FlateDecode":
             raise NotImplementedError(
                 f"stream filter {repr(self.dictionary.Filter)} unknown/unsupported"
             )
+        try:
+            expected_length = self.dictionary.DL
+        except AttributeError:
+            expected_length = self.dictionary.Length
+        return zlib.decompress(self.buf, bufsize=int(expected_length))
 
 
 def pdf_repr(x):
@@ -443,7 +442,7 @@ class PdfParser:
 
     def rewrite_pages(self):
         pages_tree_nodes_to_delete = []
-        for i, page_ref in enumerate(self.orig_pages):
+        for page_ref in self.orig_pages:
             page_info = self.cached_objects[page_ref]
             del self.xref_table[page_ref.object_id]
             pages_tree_nodes_to_delete.append(page_info[PdfName(b"Parent")])
@@ -451,10 +450,10 @@ class PdfParser:
                 # the page has been deleted
                 continue
             # make dict keys into strings for passing to write_page
-            stringified_page_info = {}
-            for key, value in page_info.items():
-                # key should be a PdfName
-                stringified_page_info[key.name_as_str()] = value
+            stringified_page_info = {
+                key.name_as_str(): value for key, value in page_info.items()
+            }
+
             stringified_page_info["Parent"] = self.pages_ref
             new_page_ref = self.write_page(None, **stringified_page_info)
             for j, cur_page_ref in enumerate(self.pages):
@@ -955,8 +954,8 @@ class PdfParser:
                 check_format_condition(m, "xref entry not found")
                 offset = m.end()
                 is_free = m.group(3) == b"f"
-                generation = int(m.group(2))
                 if not is_free:
+                    generation = int(m.group(2))
                     new_entry = (int(m.group(1)), generation)
                     check_format_condition(
                         i not in self.xref_table or self.xref_table[i] == new_entry,

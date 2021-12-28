@@ -66,12 +66,10 @@ class FITSStubImageFile(ImageFile.StubImageFile):
         number_of_bits = int(headers[b"BITPIX"])
         if number_of_bits == 8:
             self.mode = "L"
-        elif number_of_bits == 16:
+        elif number_of_bits in {16, 32}:
             self.mode = "I"
             # rawmode = "I;16S"
-        elif number_of_bits == 32:
-            self.mode = "I"
-        elif number_of_bits in (-32, -64):
+        elif number_of_bits in {-32, -64}:
             self.mode = "F"
             # rawmode = "F" if number_of_bits == -32 else "F;64F"
 

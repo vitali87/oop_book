@@ -73,7 +73,7 @@ def read_32(fobj, start_length, size):
                 if byte & 0x80:
                     blocksize = byte - 125
                     byte = fobj.read(1)
-                    for i in range(blocksize):
+                    for _ in range(blocksize):
                         data.append(byte)
                 else:
                     blocksize = byte + 1
@@ -324,11 +324,7 @@ def _save(im, fp, filename):
     provided_images = {im.width: im for im in im.encoderinfo.get("append_images", [])}
     size_streams = {}
     for size in set(sizes.values()):
-        image = (
-            provided_images[size]
-            if size in provided_images
-            else im.resize((size, size))
-        )
+        image = provided_images.get(size, im.resize((size, size)))
 
         temp = io.BytesIO()
         image.save(temp, "png")

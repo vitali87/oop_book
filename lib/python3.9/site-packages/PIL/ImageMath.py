@@ -42,12 +42,10 @@ class _Operand:
                 return im1.im
             else:
                 raise ValueError(f"unsupported mode: {im1.im.mode}")
+        elif _isconstant(im1) and self.im.mode in ("1", "L", "I"):
+            return Image.new("I", self.im.size, im1)
         else:
-            # argument was a constant
-            if _isconstant(im1) and self.im.mode in ("1", "L", "I"):
-                return Image.new("I", self.im.size, im1)
-            else:
-                return Image.new("F", self.im.size, im1)
+            return Image.new("F", self.im.size, im1)
 
     def apply(self, op, im1, im2=None, mode=None):
         im1 = self.__fixup(im1)
@@ -69,8 +67,8 @@ class _Operand:
                     im1 = im1.convert("F")
                 if im2.mode != "F":
                     im2 = im2.convert("F")
-                if im1.mode != im2.mode:
-                    raise ValueError("mode mismatch")
+            if im1.mode != im2.mode:
+                raise ValueError("mode mismatch")
             if im1.size != im2.size:
                 # crop both arguments to a common size
                 size = (min(im1.size[0], im2.size[0]), min(im1.size[1], im2.size[1]))
@@ -219,10 +217,7 @@ def imagemath_convert(self, mode):
     return _Operand(self.im.convert(mode))
 
 
-ops = {}
-for k, v in list(globals().items()):
-    if k[:10] == "imagemath_":
-        ops[k[10:]] = v
+ops = {k[10:]: v for k, v in list(globals().items()) if k[:10] == "imagemath_"}
 
 
 def eval(expression, _dict={}, **kw):

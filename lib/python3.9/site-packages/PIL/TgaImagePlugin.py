@@ -192,14 +192,10 @@ def _save(im, fp, filename):
     else:
         colormapfirst, colormaplength, colormapentry = 0, 0, 0
 
-    if im.mode in ("LA", "RGBA"):
-        flags = 8
-    else:
-        flags = 0
-
+    flags = 8 if im.mode in ("LA", "RGBA") else 0
     orientation = im.encoderinfo.get("orientation", im.info.get("orientation", -1))
     if orientation > 0:
-        flags = flags | 0x20
+        flags |= 0x20
 
     fp.write(
         o8(id_len)

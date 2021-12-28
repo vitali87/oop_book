@@ -141,21 +141,20 @@ class WebPImageFile(ImageFile.ImageFile):
             self._get_next()  # Advance to the requested frame
 
     def load(self):
-        if _webp.HAVE_WEBPANIM:
-            if self.__loaded != self.__logical_frame:
-                self._seek(self.__logical_frame)
+        if _webp.HAVE_WEBPANIM and self.__loaded != self.__logical_frame:
+            self._seek(self.__logical_frame)
 
-                # We need to load the image data for this frame
-                data, timestamp, duration = self._get_next()
-                self.info["timestamp"] = timestamp
-                self.info["duration"] = duration
-                self.__loaded = self.__logical_frame
+            # We need to load the image data for this frame
+            data, timestamp, duration = self._get_next()
+            self.info["timestamp"] = timestamp
+            self.info["duration"] = duration
+            self.__loaded = self.__logical_frame
 
-                # Set tile
-                if self.fp and self._exclusive_fp:
-                    self.fp.close()
-                self.fp = BytesIO(data)
-                self.tile = [("raw", (0, 0) + self.size, 0, self.rawmode)]
+            # Set tile
+            if self.fp and self._exclusive_fp:
+                self.fp.close()
+            self.fp = BytesIO(data)
+            self.tile = [("raw", (0, 0) + self.size, 0, self.rawmode)]
 
         return super().load()
 
@@ -172,9 +171,7 @@ def _save_all(im, fp, filename):
 
     # If total frame count is 1, then save using the legacy API, which
     # will preserve non-alpha modes
-    total = 0
-    for ims in [im] + append_images:
-        total += getattr(ims, "n_frames", 1)
+    total = sum(getattr(ims, "n_frames", 1) for ims in [im] + append_images)
     if total == 1:
         _save(im, fp, filename)
         return

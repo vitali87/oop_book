@@ -89,10 +89,7 @@ class IptcImageFile(ImageFile.ImageFile):
             tag, size = self.field()
             if not tag or tag == (8, 10):
                 break
-            if size:
-                tagdata = self.fp.read(size)
-            else:
-                tagdata = None
+            tagdata = self.fp.read(size) if size else None
             if tag in self.info:
                 if isinstance(self.info[tag], list):
                     self.info[tag].append(tagdata)
@@ -104,10 +101,7 @@ class IptcImageFile(ImageFile.ImageFile):
         # mode
         layers = i8(self.info[(3, 60)][0])
         component = i8(self.info[(3, 60)][1])
-        if (3, 65) in self.info:
-            id = i8(self.info[(3, 65)][0]) - 1
-        else:
-            id = 0
+        id = i8(self.info[(3, 65)][0]) - 1 if (3, 65) in self.info else 0
         if layers == 1 and not component:
             self.mode = "L"
         elif layers == 3 and component:

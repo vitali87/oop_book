@@ -119,7 +119,7 @@ class GimpGradientFile(GradientFile):
 
         gradient = []
 
-        for i in range(count):
+        for _ in range(count):
 
             s = fp.readline().split()
             w = [float(x) for x in s[:11]]
