@@ -18,14 +18,8 @@ class Sample:
         self.classification: Optional[str]# = None
 
     def __repr__(self) -> str:
-        if self.species is None:
-            known_unknown = "UnknownSample"
-        else:
-            known_unknown = "KnownSample"
-        if self.classification is None:
-            classification = ""
-        else:
-            classification = f", {self.classification}"
+        known_unknown = "UnknownSample" if self.species is None else "KnownSample"
+        classification = "" if self.classification is None else f", {self.classification}"
         return (
             f"{known_unknown}("
             f"sepal_length = {self.sepal_length},"
