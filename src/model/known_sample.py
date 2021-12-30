@@ -126,3 +126,13 @@ class KnownSample3(Sample):
             return self._classification
         else:
             raise AttributeError("Training samples have no classification")
+
+
+    @classification.setter
+    def classification(self, value: str) -> None:
+        if self.purpose == Purpose.Testing:
+            self._classification = value
+        else:
+            raise AttributeError(
+                "Training Samples cannot be classified"
+            )
