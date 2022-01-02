@@ -4,7 +4,7 @@ class AudioFile:
     ext: str
 
 def __init__(self, filepath: Path) -> None:
-    if not filepath.suffix == self.ext:
+    if filepath.suffix != self.ext:
         raise ValueError("Invalid file format")
     self.filepath = filepath
 
