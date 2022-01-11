@@ -1,5 +1,6 @@
 from typing import List
 
+
 class EvenOnly(List[int]):
     def append(self, value: int) -> None:
         if not isinstance(value, int):

@@ -16,5 +16,6 @@ def main() -> None:
     p2 = Point(3, 4)
     print(f"{p1.calculate_distance(p2)=}")
 
+
 if __name__ == "__main__":
     main()

@@ -4,6 +4,7 @@ from typing import Any
 
 from src.contact import ContactList
 
+
 class Contact:
     all_contacts = ContactList()
 
@@ -24,6 +25,7 @@ class Contact:
             f"{self.__class__.__name__}("
             f"{self.name!r}, {self.email!r}"f")"
         )
+
 
 class AddressHolder:
     def __init__(

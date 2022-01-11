@@ -1,6 +1,6 @@
 from typing import Union
 
-from NoReturn import never_return
+from src.no_return import never_return
 
 
 def handler() -> None:
@@ -41,11 +41,13 @@ def funniest_division(division: int) -> Union[str, float]:
         print("No,no,no, not 13!")
         raise
 
+
 def exception_args():
     try:
         raise ValueError("This is an argument")
     except ValueError as e:
         print(f"The exception arguments were {e.args}")
+
 
 some_exceptions = [ValueError,TypeError,IndexError,None]
 
@@ -67,12 +69,14 @@ for choice in some_exceptions:
     finally:
         print("This cleanup code is always called")
 
+
 def divide_with_exception(dividend: int,
                           divisor: int) -> None:
     try:
         print(f"{dividend/ divisor=}")
     except ZeroDivisionError:
         print("You can't divide by zero")
+
 
 def divide_with_if(dividend: int,
                           divisor: int) -> None:

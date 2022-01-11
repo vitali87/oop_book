@@ -57,4 +57,3 @@ class ZipProcessor(ABC):
     @abstractmethod
     def transform(self,extracted: Path) -> None:
         ...
-

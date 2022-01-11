@@ -1,5 +1,6 @@
 import abc
 
+
 class MediaLoader(abc.ABC):
     @abc.abstractmethod
     def play(self) -> None:

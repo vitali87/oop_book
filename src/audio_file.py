@@ -1,12 +1,15 @@
 from pathlib import Path
 
+
 class AudioFile:
     ext: str
+
 
 def __init__(self, filepath: Path) -> None:
     if filepath.suffix != self.ext:
         raise ValueError("Invalid file format")
     self.filepath = filepath
+
 
 class MP3File(AudioFile):
     ext = ".mp3"

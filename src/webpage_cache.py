@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from typing import Optional, cast
 
+
 class WebPage:
     def __init__(self, url: str) -> None:
         self.url = url

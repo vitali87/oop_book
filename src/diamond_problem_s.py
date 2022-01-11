@@ -14,6 +14,7 @@ class LeftSubclass(BaseClass):
         print("Calling method on LeftSubclass")
         self.num_left_calls += 1
 
+
 class RightSubclass(BaseClass):
     num_right_calls = 0
 
@@ -21,6 +22,7 @@ class RightSubclass(BaseClass):
         super().call_me()
         print("Calling method on RightSubclass")
         self.num_right_calls += 1
+
 
 class SubClass(LeftSubclass,RightSubclass):
     num_sub_calls = 0

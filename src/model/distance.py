@@ -1,10 +1,12 @@
 from src.model.sample import Sample
 from math import hypot
 
+
 class Distance:
     """Definition of a ditance computation"""
     def distance(self,s1: Sample,s2: Sample) -> float:
         pass
+
 
 # Euclidean distance
 class ED(Distance):
@@ -15,6 +17,7 @@ class ED(Distance):
             s1.petal_length - s2.petal_length,
             s1.petal_width - s2.petal_width,
         )
+
 
 # Manhattan distance
 class MD(Distance):
@@ -27,6 +30,7 @@ class MD(Distance):
             ]
         )
 
+
 # Chebyshev distance
 class CD(Distance):
     def distance(self,s1: Sample,s2: Sample) -> float:
@@ -37,6 +41,7 @@ class CD(Distance):
             abs(s1.petal_width - s2.petal_width),
             ]
         )
+
 
 # Sorensen distance
 class SD(Distance):

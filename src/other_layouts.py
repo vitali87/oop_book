@@ -1,8 +1,10 @@
 from typing import Optional
 
+
 class Formatter:
     def format(self, string: str) -> str:
         pass
+
 
 def format_string(string: str, formatter: Optional[Formatter] = None) -> str:
     """
