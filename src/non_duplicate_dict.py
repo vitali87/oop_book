@@ -18,12 +18,14 @@ class NoDupDict(Dict[Hashable,Any]):
 
     def __init__(self, init: DictInit = None,
                  **kwargs: Any) -> None:
-        if isinstance(init, Mapping):
+        if (
+            isinstance(init, Mapping)
+            or not isinstance(init, Iterable)
+            and init is not None
+        ):
             super().__init__(init, **kwargs)
         elif isinstance(init, Iterable):
             for k,v in cast(Iterable[Tuple[Hashable,Any]], init):
                 self[k] = v
-        elif init is None:
-            super().__init__(**kwargs)
         else:
-            super().__init__(init,**kwargs)
+            super().__init__(**kwargs)
