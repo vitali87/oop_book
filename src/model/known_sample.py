@@ -7,6 +7,7 @@ from src.model.species import Domain
 
 species = Domain({"Iris-setos","Iris-versicolour","Irsi-virginica"})
 
+
 class KnownSample(Sample):
     @classmethod
     def from_dict(cls, row: dict[str, str]) -> "KnownSample":
@@ -50,6 +51,7 @@ class KnownSample(Sample):
             f"species = {self.species!r}"
             f")"
         )
+
 
 class KnownSample2(Sample):
     @classmethod
@@ -126,7 +128,6 @@ class KnownSample3(Sample):
             return self._classification
         else:
             raise AttributeError("Training samples have no classification")
-
 
     @classification.setter
     def classification(self, value: str) -> None:

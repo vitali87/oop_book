@@ -1,5 +1,6 @@
 import math
 
+
 class Point:
     '''
     Representing a point in two-deimensional coordinate system

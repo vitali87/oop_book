@@ -20,6 +20,7 @@ class Comparable(Protocol):
 
 BaseMapping = abc.Mapping[Comparable,Any]
 
+
 class Lookup(BaseMapping):
     @overload
     def __init__(

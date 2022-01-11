@@ -1,6 +1,7 @@
 import weakref
 from typing import Optional
 
+
 class Hyperparameter:
     """ A hyperparameter value and overall quality of
     the classification

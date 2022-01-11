@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 import zipfile
 
+
 class ZipReplace:
     def __init__(
             self,

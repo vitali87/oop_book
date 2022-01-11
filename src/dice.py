@@ -1,6 +1,8 @@
 import abc
+import logging
 import random
-from typing import Type, Set, Iterable, Any
+from functools import wraps
+from typing import Type, Set, Iterable, Any, cast
 
 
 class Die(abc.ABC):
@@ -15,9 +17,11 @@ class Die(abc.ABC):
     def __repr__(self) -> str:
         return f"{self.face}"
 
+
 class D4(Die):
     def roll(self) -> None:
         self.face = random.choice((1,2,3,4))
+
 
 class D6(Die):
     def roll(self) -> None:
@@ -36,10 +40,12 @@ class Dice(abc.ABC):
     def total(self) -> int:
         return sum(d.face for d in self.dice)
 
+
 class SimpleDice(Dice):
     def roll(self) -> None:
         for d in self.dice:
             d.roll()
+
 
 class YachtDice(Dice):
     def __init__(self) -> None:
@@ -57,6 +63,7 @@ class YachtDice(Dice):
             if n not in self.saved:
                 d.roll()
             self.saved = set()
+
 
 class DieM(metaclass=abc.ABCMeta):
     def __init__(self) -> None:
@@ -133,3 +140,53 @@ class DDice:
             return self
         else:
             return NotImplemented
+
+
+class DieMeta(abc.ABCMeta):
+    def __new__(
+            metaclass: Type[type],
+            name: str,
+            bases: tuple[type, ...],
+            namespace: dict[str,Any],
+            **kwargs: Any) -> "DieMeta":
+        if "roll" in namespace and not getattr(
+            namespace["roll"],"__isabstractmethod__", False
+        ):
+            namespace.setdefault("logger", logging.getLogger((name)))
+
+            original_method = namespace["roll"]
+
+            @wraps(original_method)
+            def logged_roll(self: "DieLog") -> None:
+                original_method(self)
+                self.logger.info(f"Rolled {self.face}")
+
+            namespace["roll"] = logged_roll
+        new_object = cast(
+            "DieMeta", abc.ABCMeta.__new__(
+                metaclass, name, bases, namespace
+            )
+        )
+        return new_object
+
+
+class DieLog(metaclass=DieMeta):
+    logger: logging.Logger
+
+    def __init__(self) -> None:
+        self.face: int
+        self.roll()
+
+    @abc.abstractmethod
+    def roll(self) -> None:
+        ...
+
+    def __repr__(self) -> str:
+        return f"{self.face}"
+
+
+class D6L(DieLog):
+    def roll(self) -> None:
+        """Some documentation on D6L"""
+        self.face = random.randrange(1,7)
+

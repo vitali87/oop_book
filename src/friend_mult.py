@@ -1,6 +1,7 @@
 from src.contact import Contact
 from src.address_holder import AddressHolder
 
+
 class Friend(Contact,AddressHolder):
     def __init__(
             self,

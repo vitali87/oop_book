@@ -21,6 +21,7 @@ class Colour_PY:
         self.rgb_value = rgb_value
         self.name = name
 
+
 class Colour_V:
     def __init__(self, rgb_value: int, name: str) -> None:
         self._rgb_value = rgb_value
@@ -32,6 +33,7 @@ class Colour_V:
         if not name:
             raise ValueError(f"Invalid name {name!r}")
         self._name = name
+
 
 class Colour_VP:
     def __init__(self, rgb_value: int, name: str) -> None:
@@ -49,6 +51,7 @@ class Colour_VP:
         return self._name
 
     name = property(_get_name, _set_name)
+
 
 class NorwegianBlue:
     def __init__(self, name: str) -> None:
