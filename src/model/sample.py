@@ -1,4 +1,5 @@
 import abc
+import random
 from typing import Optional, List, overload, Iterable, TypedDict
 
 from src.model.testing_known_sample import TestingKnownSample
@@ -45,7 +46,7 @@ class SampleDict(TypedDict):
     petal_length: float
     petal_width: float
     species: str
-
+        
 
 class SamplePartition(List[SampleDict],abc.ABC):
     @overload
@@ -84,4 +85,37 @@ class SamplePartition(List[SampleDict],abc.ABC):
         ...
 
 
+class ShuffleSamplePartition(SamplePartition):
+    """Shuffle and cut the list into Training and Testing"""
 
+    def __init__(
+            self,
+            iterable: Optional[Iterable[SampleDict]] = None,
+            *,
+            training_subset: float = 0.8,
+    ) -> None:
+        """Constructor for ShuffleSamplePartition"""
+        super().__init(
+            iterable,
+            training_subset=training_subset
+        )
+        self.split: Optional[int] = None
+
+    def shuffle(self) -> None:
+        """"""
+        if not self.split:
+            random.shuffle(self)
+            self.split = int(len(self) * self.training_subset)
+
+    @property
+    def training(self) -> List[TrainingKnownSample]:
+        self.shuffle()
+        return [TrainingKnownSample(**sd) for sd in self[: self.split]]
+
+    @property
+    def testing(self) -> List[TestingKnownSample]:
+        self.shuffle()
+        return [TestingKnownSample(**sd) for sd in self[: self.split]]
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}"
