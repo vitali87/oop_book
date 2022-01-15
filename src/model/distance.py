@@ -3,7 +3,7 @@ from math import hypot
 
 
 class Distance:
-    """Definition of a ditance computation"""
+    """Definition of a distance computation"""
     def distance(self,s1: Sample,s2: Sample) -> float:
         pass
 
