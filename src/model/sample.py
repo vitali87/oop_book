@@ -6,7 +6,7 @@ import weakref
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Optional, List, overload, Iterable, TypedDict, Set, Iterator
+from typing import Optional, List, overload, Iterable, TypedDict, Set, Iterator, Tuple
 
 from src.own_exceptions import InvalidSampleError, BadSampleRow
 
@@ -403,5 +403,88 @@ class ShufflingSamplePartition(SamplePartition):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}"
+
+
+class DealingPartition(abc.ABC):
+    """None"""
+    @abc.abstractmethod
+    def __init__(
+            self,
+            items: Optional[Iterable[SampleDict]],
+            *,
+            training_subset: Tuple[int, int] = (8,10),
+    ) -> None:
+        """Constructor for DealingPartition"""
+        ...
+
+    @abc.abstractmethod
+    def extend(self,items: Iterable[SampleDict]) -> None:
+        """None"""
+        ...
+
+    @abc.abstractmethod
+    def append(self,items: SampleDict) -> None:
+        """None"""
+        ...
+
+    @property
+    @abc.abstractmethod
+    def training(self) -> List[TrainingKnownSample]:
+        """None"""
+        ...
+
+    @property
+    @abc.abstractmethod
+    def testing(self) -> List[TestingKnownSample]:
+        ...
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}"
+
+
+class CountingDealingPartition(DealingPartition):
+    """Responsible for ..."""
+
+    def __init__(
+            self,
+            items: Optional[Iterable[SampleDict]],
+            *,
+            training_subset: Tuple[int, int] = (8,10),
+    ) -> None:
+        """Constructor for CountingDealingPartition"""
+        self.training_subset = training_subset
+        self.counter = 0
+        self._training: List[TrainingKnownSample] = []
+        self._testing: List[TestingKnownSample] = []
+        if items:
+            self.extend(items)
+
+    def extend(self,items: Iterable[SampleDict]) -> None:
+        """Responsible for """
+        for item in items:
+            self.append(item)
+
+    def append(self,items: SampleDict) -> None:
+        """Responsible for """
+        n, d = self.training_subset
+        if self.counter % d < n:
+            self._training.append(TrainingKnownSample(**item))
+        else:
+            self._testing.append(TestingKnownSample(**item))
+
+    @property
+    def training(self) -> List[TrainingKnownSample]:
+        """Responsible for """
+        return self._training
+
+    @property
+    def testing(self) -> List[TestingKnownSample]:
+        """Responsible for """
+        return self._testing
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}"
+
+
 
 
