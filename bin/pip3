@@ -1,4 +1,4 @@
-#!/home/vitali/Documents/oop_book/bin/python3
+#!/home/vitali/Documents/oop_book/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

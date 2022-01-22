@@ -38,6 +38,7 @@ class StockOrdinary:
         self.high = high
         self.low = low
 
+
 # Example 2
 """
 >>> s_ord = StockOrdinary("AAPL", 123.52, 137.98, 53.15)
