@@ -25,8 +25,7 @@ logger = logging.getLogger(__name__)
 
 def _get_statefile_name(key: str) -> str:
     key_bytes = key.encode()
-    name = hashlib.sha224(key_bytes).hexdigest()
-    return name
+    return hashlib.sha224(key_bytes).hexdigest()
 
 
 class SelfCheckState:
@@ -93,7 +92,7 @@ def was_installed_by_pip(pkg: str) -> bool:
     installed by system package manager, such as dnf on Fedora.
     """
     dist = get_default_environment().get_distribution(pkg)
-    return dist is not None and "pip" == dist.installer
+    return dist is not None and dist.installer == "pip"
 
 
 def pip_self_version_check(session: PipSession, options: optparse.Values) -> None:

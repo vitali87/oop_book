@@ -20,6 +20,7 @@
 
 """Utilities for writing code that runs on Python 2 and 3"""
 
+
 from __future__ import absolute_import
 
 import functools
@@ -35,7 +36,7 @@ __version__ = "1.16.0"
 # Useful for very coarse version differentiation.
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
-PY34 = sys.version_info[0:2] >= (3, 4)
+PY34 = sys.version_info[:2] >= (3, 4)
 
 if PY3:
     string_types = str,
@@ -150,10 +151,7 @@ class MovedAttribute(_LazyDescr):
                 new_mod = name
             self.mod = new_mod
             if new_attr is None:
-                if old_attr is None:
-                    new_attr = name
-                else:
-                    new_attr = old_attr
+                new_attr = name if old_attr is None else old_attr
             self.attr = new_attr
         else:
             self.mod = old_mod
@@ -187,9 +185,7 @@ class _SixMetaPathImporter(object):
         return self.known_modules[self.name + "." + fullname]
 
     def find_module(self, fullname, path=None):
-        if fullname in self.known_modules:
-            return self
-        return None
+        return self if fullname in self.known_modules else None
 
     def find_spec(self, fullname, path, target=None):
         if fullname in self.known_modules:

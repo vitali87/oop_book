@@ -118,19 +118,21 @@ class SingleByteCharSetProber(CharSetProber):
             self._last_order = order
 
         charset_name = self._model.charset_name
-        if self.state == ProbingState.DETECTING:
-            if self._total_seqs > self.SB_ENOUGH_REL_THRESHOLD:
-                confidence = self.get_confidence()
-                if confidence > self.POSITIVE_SHORTCUT_THRESHOLD:
-                    self.logger.debug('%s confidence = %s, we have a winner',
-                                      charset_name, confidence)
-                    self._state = ProbingState.FOUND_IT
-                elif confidence < self.NEGATIVE_SHORTCUT_THRESHOLD:
-                    self.logger.debug('%s confidence = %s, below negative '
-                                      'shortcut threshhold %s', charset_name,
-                                      confidence,
-                                      self.NEGATIVE_SHORTCUT_THRESHOLD)
-                    self._state = ProbingState.NOT_ME
+        if (
+            self.state == ProbingState.DETECTING
+            and self._total_seqs > self.SB_ENOUGH_REL_THRESHOLD
+        ):
+            confidence = self.get_confidence()
+            if confidence > self.POSITIVE_SHORTCUT_THRESHOLD:
+                self.logger.debug('%s confidence = %s, we have a winner',
+                                  charset_name, confidence)
+                self._state = ProbingState.FOUND_IT
+            elif confidence < self.NEGATIVE_SHORTCUT_THRESHOLD:
+                self.logger.debug('%s confidence = %s, below negative '
+                                  'shortcut threshhold %s', charset_name,
+                                  confidence,
+                                  self.NEGATIVE_SHORTCUT_THRESHOLD)
+                self._state = ProbingState.NOT_ME
 
         return self.state
 

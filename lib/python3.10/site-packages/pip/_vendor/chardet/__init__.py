@@ -68,16 +68,18 @@ def detect_all(byte_str):
                 lower_charset_name = prober.charset_name.lower()
                 # Use Windows encoding name instead of ISO-8859 if we saw any
                 # extra Windows-specific bytes
-                if lower_charset_name.startswith('iso-8859'):
-                    if detector._has_win_bytes:
-                        charset_name = detector.ISO_WIN_MAP.get(lower_charset_name,
-                                                            charset_name)
+                if (
+                    lower_charset_name.startswith('iso-8859')
+                    and detector._has_win_bytes
+                ):
+                    charset_name = detector.ISO_WIN_MAP.get(lower_charset_name,
+                                                        charset_name)
                 results.append({
                     'encoding': charset_name,
                     'confidence': prober.get_confidence(),
                     'language': prober.language,
                 })
-        if len(results) > 0:
+        if results:
             return sorted(results, key=lambda result: -result['confidence'])
 
     return [detector.result]

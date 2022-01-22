@@ -111,9 +111,7 @@ class IndentingFormatter(logging.Formatter):
         message_start = self.get_message_start(formatted, record.levelno)
         formatted = message_start + formatted
 
-        prefix = ""
-        if self.add_timestamp:
-            prefix = f"{self.formatTime(record)} "
+        prefix = f"{self.formatTime(record)} " if self.add_timestamp else ""
         prefix += " " * get_indentation()
         formatted = "".join([prefix + line for line in formatted.splitlines(True)])
         return formatted

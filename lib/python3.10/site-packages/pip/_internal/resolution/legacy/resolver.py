@@ -343,13 +343,12 @@ class Resolver(BaseResolver):
             req.check_if_exists(self.use_user_site)
 
         if req.satisfied_by:
-            should_modify = (
+            if should_modify := (
                 self.upgrade_strategy != "to-satisfy-only"
                 or self.force_reinstall
                 or self.ignore_installed
                 or req.link.scheme == "file"
-            )
-            if should_modify:
+            ):
                 self._set_req_to_reinstall(req)
             else:
                 logger.info(

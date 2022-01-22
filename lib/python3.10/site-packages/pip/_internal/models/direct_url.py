@@ -116,9 +116,7 @@ class ArchiveInfo:
 
     @classmethod
     def _from_dict(cls, d: Optional[Dict[str, Any]]) -> Optional["ArchiveInfo"]:
-        if d is None:
-            return None
-        return cls(hash=_get(d, str, "hash"))
+        return None if d is None else cls(hash=_get(d, str, "hash"))
 
     def _to_dict(self) -> Dict[str, Any]:
         return _filter_none(hash=self.hash)
@@ -179,10 +177,9 @@ class DirectUrl:
         """
         purl = urllib.parse.urlsplit(self.url)
         netloc = self._remove_auth_from_netloc(purl.netloc)
-        surl = urllib.parse.urlunsplit(
+        return urllib.parse.urlunsplit(
             (purl.scheme, netloc, purl.path, purl.query, purl.fragment)
         )
-        return surl
 
     def validate(self) -> None:
         self.from_dict(self.to_dict())

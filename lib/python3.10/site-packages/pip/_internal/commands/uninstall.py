@@ -94,11 +94,10 @@ class UninstallCommand(Command, SessionCommandMixin):
         )
 
         for req in reqs_to_uninstall.values():
-            uninstall_pathset = req.uninstall(
+            if uninstall_pathset := req.uninstall(
                 auto_confirm=options.yes,
                 verbose=self.verbosity > 0,
-            )
-            if uninstall_pathset:
+            ):
                 uninstall_pathset.commit()
 
         warn_if_run_as_root()
