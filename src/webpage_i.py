@@ -1,5 +1,6 @@
-from webpage_cache import WebPage
 import time
+
+from webpage_cache import WebPage
 
 webpage = WebPage("https://huysfoundation.org/")
 
@@ -15,4 +16,4 @@ for i in range(5):
     print(f"Request {i}: {fetch[i]: .10f}")
 
 for j in range(len(content) - 1):
-    assert content[j] == content[j+1]
+    assert content[j] == content[j + 1]

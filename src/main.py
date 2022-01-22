@@ -1,4 +1,3 @@
-from typing import Optional
 from ecommerce import database
 
 # database.initialise_database("path/to/data")

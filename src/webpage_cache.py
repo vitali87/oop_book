@@ -1,5 +1,5 @@
+from typing import Optional
 from urllib.request import urlopen
-from typing import Optional, cast
 
 
 class WebPage:

@@ -18,7 +18,7 @@ def format_string(string: str, formatter: Optional[Formatter] = None) -> str:
 
         def format(self, string: str) -> str:
             return str(string).title()
-    
+
     if not formatter:
         formatter = DefaultFormatter()
 

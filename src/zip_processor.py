@@ -18,7 +18,7 @@ class ZipProcessor(ABC):
             with zipfile.ZipFile(input_path) as input:
                 self.copy_and_transform(input, output)
 
-    def make_backup(self) -> tuple[Path,Path]:
+    def make_backup(self) -> tuple[Path, Path]:
         input_path = self.archive_path.with_suffix(
             f"{self.archive_path.suffix}.old"
         )
@@ -43,8 +43,8 @@ class ZipProcessor(ABC):
 
     def matches(self, item: zipfile.ZipInfo) -> bool:
         return (
-            not item.is_dir()
-            and fnmatch.fnmatch(item.filename, self._pattern)
+                not item.is_dir()
+                and fnmatch.fnmatch(item.filename, self._pattern)
         )
 
     def remove_under_cwd(self, extracted: Path) -> None:
@@ -55,5 +55,5 @@ class ZipProcessor(ABC):
             parent.rmdir()
 
     @abstractmethod
-    def transform(self,extracted: Path) -> None:
+    def transform(self, extracted: Path) -> None:
         ...

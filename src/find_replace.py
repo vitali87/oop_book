@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 import fnmatch
-from pathlib import Path
 import re
 import zipfile
+from pathlib import Path
 
 
 class ZipReplace:
@@ -21,11 +22,11 @@ class ZipReplace:
     def find_and_replace(self) -> None:
         input_path, output_path = self.make_backup()
 
-        with zipfile.ZipFile(output_path,"w") as output:
+        with zipfile.ZipFile(output_path, "w") as output:
             with zipfile.ZipFile(input_path) as input:
-                self.copy_and_transform(input,output)
+                self.copy_and_transform(input, output)
 
-    def make_backup(self) -> tuple(Path,Path):
+    def make_backup(self) -> tuple(Path, Path):
         input_path = self.archive_path.with_suffix(
             f"{self.archive_path.suffix}.old"
         )
@@ -41,14 +42,13 @@ class ZipReplace:
             if (not item.is_dir()) and fnmatch.fnmatch(item.filename, self.pattern):
                 print(f"Transform {item}")
                 input_text = extracted.read_text()
-                output_text = re.sub(self.find,self.replace, input_text)
+                output_text = re.sub(self.find, self.replace, input_text)
                 extracted.write_text(output_text)
             else:
                 print(f"Ignore  {item}")
-            output.write(extracted,item.filename)
+            output.write(extracted, item.filename)
             extracted.unlink()
             for parent in extracted.parents:
                 if parent == Path.cwd():
                     break
                 parent.rmdir()
-

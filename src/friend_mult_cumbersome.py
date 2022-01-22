@@ -15,7 +15,7 @@ class Contact:
             email: str = "",
             **kwargs: Any
     ) -> None:
-        super().__init__(**kwargs) # type: ignore [call-arg]
+        super().__init__(**kwargs)  # type: ignore [call-arg]
         self.name = name
         self.email = email
         self.all_contacts.append(self)
@@ -37,19 +37,19 @@ class AddressHolder:
             code: str = "",
             **kwargs: Any
     ) -> None:
-        super().__init__(**kwargs) #type: ignore [call-type]
+        super().__init__(**kwargs)  # type: ignore [call-type]
         self.street = street
         self.city = city,
         self.state = state,
         self.code = code
 
 
-class Friend(Contact,AddressHolder):
+class Friend(Contact, AddressHolder):
     def __init__(
             self,
             /,
             phone: str = "",
             **kwargs: Any
-     ) -> None:
+    ) -> None:
         super().__init__(**kwargs)
         self.phone = phone

@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-class LongNameDict(dict[str,int]):
+class LongNameDict(dict[str, int]):
     def longest_key(self) -> Optional[str]:
         """In effect, max(self, key = len), but less obscure"""
         longest = None

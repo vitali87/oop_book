@@ -1,8 +1,8 @@
-from src.contact import Contact
 from src.address_holder import AddressHolder
+from src.contact import Contact
 
 
-class Friend(Contact,AddressHolder):
+class Friend(Contact, AddressHolder):
     def __init__(
             self,
             name: str,
