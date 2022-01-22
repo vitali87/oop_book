@@ -161,9 +161,8 @@ class ChunkStream:
             pos = self.fp.tell()
             length = i32(s)
 
-        if not is_cid(cid):
-            if not ImageFile.LOAD_TRUNCATED_IMAGES:
-                raise SyntaxError(f"broken PNG file (chunk {repr(cid)})")
+        if not is_cid(cid) and not ImageFile.LOAD_TRUNCATED_IMAGES:
+            raise SyntaxError(f"broken PNG file (chunk {repr(cid)})")
 
         return cid, pos, length
 
@@ -499,11 +498,11 @@ class PngStream(ChunkStream):
         s = ImageFile._safe_read(self.fp, length)
         px, py = i32(s, 0), i32(s, 4)
         unit = s[8]
-        if unit == 1:  # meter
+        if unit == 0:
+            self.im_info["aspect"] = px, py
+        elif unit == 1:
             dpi = px * 0.0254, py * 0.0254
             self.im_info["dpi"] = dpi
-        elif unit == 0:
-            self.im_info["aspect"] = px, py
         return s
 
     def chunk_tEXt(self, pos, length):
@@ -535,10 +534,7 @@ class PngStream(ChunkStream):
         except ValueError:
             k = s
             v = b""
-        if v:
-            comp_method = v[0]
-        else:
-            comp_method = 0
+        comp_method = v[0] if v else 0
         if comp_method != 0:
             raise SyntaxError(f"Unknown compression method {comp_method} in zTXt chunk")
         try:
@@ -576,17 +572,16 @@ class PngStream(ChunkStream):
         except ValueError:
             return s
         if cf != 0:
-            if cm == 0:
-                try:
-                    v = _safe_zlib_decompress(v)
-                except ValueError:
-                    if ImageFile.LOAD_TRUNCATED_IMAGES:
-                        return s
-                    else:
-                        raise
-                except zlib.error:
+            if cm != 0:
+                return s
+            try:
+                v = _safe_zlib_decompress(v)
+            except ValueError:
+                if ImageFile.LOAD_TRUNCATED_IMAGES:
                     return s
-            else:
+                else:
+                    raise
+            except zlib.error:
                 return s
         try:
             k = k.decode("latin-1", "strict")
@@ -722,11 +717,7 @@ class PngImageFile(ImageFile.ImageFile):
             rawmode, data = self.png.im_palette
             self.palette = ImagePalette.raw(rawmode, data)
 
-        if cid == b"fdAT":
-            self.__prepare_idat = length - 4
-        else:
-            self.__prepare_idat = length  # used by load_prepare()
-
+        self.__prepare_idat = length - 4 if cid == b"fdAT" else length
         if self.png.im_n_frames is not None:
             self._close_exclusive_fp_after_loading = False
             self.png.save_rewind()
@@ -909,11 +900,7 @@ class PngImageFile(ImageFile.ImageFile):
                 self.__idat = length  # empty chunks are allowed
 
         # read more data from this chunk
-        if read_bytes <= 0:
-            read_bytes = self.__idat
-        else:
-            read_bytes = min(read_bytes, self.__idat)
-
+        read_bytes = self.__idat if read_bytes <= 0 else min(read_bytes, self.__idat)
         self.__idat = self.__idat - read_bytes
 
         return self.fp.read(read_bytes)
@@ -955,15 +942,14 @@ class PngImageFile(ImageFile.ImageFile):
         if not self.is_animated:
             self.png.close()
             self.png = None
-        else:
-            if self._prev_im and self.blend_op == APNG_BLEND_OP_OVER:
-                updated = self._crop(self.im, self.dispose_extent)
-                self._prev_im.paste(
-                    updated, self.dispose_extent, updated.convert("RGBA")
-                )
-                self.im = self._prev_im
-                if self.pyaccess:
-                    self.pyaccess = None
+        elif self._prev_im and self.blend_op == APNG_BLEND_OP_OVER:
+            updated = self._crop(self.im, self.dispose_extent)
+            self._prev_im.paste(
+                updated, self.dispose_extent, updated.convert("RGBA")
+            )
+            self.im = self._prev_im
+            if self.pyaccess:
+                self.pyaccess = None
 
     def _getexif(self):
         if "exif" not in self.info:

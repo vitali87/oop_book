@@ -30,17 +30,10 @@ EPSILON = 1e-10
 
 def linear(middle, pos):
     if pos <= middle:
-        if middle < EPSILON:
-            return 0.0
-        else:
-            return 0.5 * pos / middle
-    else:
-        pos = pos - middle
-        middle = 1.0 - middle
-        if middle < EPSILON:
-            return 1.0
-        else:
-            return 0.5 + 0.5 * pos / middle
+        return 0.0 if middle < EPSILON else 0.5 * pos / middle
+    pos = pos - middle
+    middle = 1.0 - middle
+    return 1.0 if middle < EPSILON else 0.5 + 0.5 * pos / middle
 
 
 def curved(middle, pos):
@@ -119,8 +112,7 @@ class GimpGradientFile(GradientFile):
 
         gradient = []
 
-        for i in range(count):
-
+        for _ in range(count):
             s = fp.readline().split()
             w = [float(x) for x in s[:11]]
 

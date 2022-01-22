@@ -58,7 +58,7 @@ class MspImageFile(ImageFile.ImageFile):
         # Header checksum
         checksum = 0
         for i in range(0, 32, 2):
-            checksum = checksum ^ i16(s, i)
+            checksum ^= i16(s, i)
         if checksum != 0:
             raise SyntaxError("bad MSP checksum")
 
@@ -174,7 +174,7 @@ def _save(im, fp, filename):
 
     checksum = 0
     for h in header:
-        checksum = checksum ^ h
+        checksum ^= h
     header[12] = checksum  # FIXME: is this the right field?
 
     # header

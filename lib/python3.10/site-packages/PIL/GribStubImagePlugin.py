@@ -29,7 +29,7 @@ def register_handler(handler):
 
 
 def _accept(prefix):
-    return prefix[0:4] == b"GRIB" and prefix[7] == 1
+    return prefix[:4] == b"GRIB" and prefix[7] == 1
 
 
 class GribStubImageFile(ImageFile.StubImageFile):
@@ -50,8 +50,7 @@ class GribStubImageFile(ImageFile.StubImageFile):
         self.mode = "F"
         self._size = 1, 1
 
-        loader = self._load()
-        if loader:
+        if loader := self._load():
             loader.open(self)
 
     def _load(self):

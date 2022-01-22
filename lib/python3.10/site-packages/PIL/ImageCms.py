@@ -138,7 +138,7 @@ FLAGS = {
 _MAX_FLAG = 0
 for flag in FLAGS.values():
     if isinstance(flag, int):
-        _MAX_FLAG = _MAX_FLAG | flag
+        _MAX_FLAG |= flag
 
 
 # --------------------------------------------------------------------.
@@ -178,12 +178,8 @@ class ImageCmsProfile:
     def _set(self, profile, filename=None):
         self.profile = profile
         self.filename = filename
-        if profile:
-            self.product_name = None  # profile.product_name
-            self.product_info = None  # profile.product_info
-        else:
-            self.product_name = None
-            self.product_info = None
+        self.product_name = None  # profile.product_name
+        self.product_info = None  # profile.product_info
 
     def tobytes(self):
         """
@@ -777,10 +773,7 @@ def getProfileInfo(profile):
         # info was description \r\n\r\n copyright \r\n\r\n K007 tag \r\n\r\n whitepoint
         description = profile.profile.profile_description
         cpright = profile.profile.copyright
-        arr = []
-        for elt in (description, cpright):
-            if elt:
-                arr.append(elt)
+        arr = [elt for elt in (description, cpright) if elt]
         return "\r\n\r\n".join(arr) + "\r\n\r\n"
 
     except (AttributeError, OSError, TypeError, ValueError) as v:
@@ -983,10 +976,7 @@ def isIntentSupported(profile, intent, direction):
             profile = ImageCmsProfile(profile)
         # FIXME: I get different results for the same data w. different
         # compilers.  Bug in LittleCMS or in the binding?
-        if profile.profile.is_intent_supported(intent, direction):
-            return 1
-        else:
-            return -1
+        return 1 if profile.profile.is_intent_supported(intent, direction) else -1
     except (AttributeError, OSError, TypeError, ValueError) as v:
         raise PyCMSError(v) from v
 

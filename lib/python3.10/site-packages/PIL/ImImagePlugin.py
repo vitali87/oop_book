@@ -165,42 +165,39 @@ class ImImageFile(ImageFile.ImageFile):
             except re.error as e:
                 raise SyntaxError("not an IM file") from e
 
-            if m:
-
-                k, v = m.group(1, 2)
-
-                # Don't know if this is the correct encoding,
-                # but a decent guess (I guess)
-                k = k.decode("latin-1", "replace")
-                v = v.decode("latin-1", "replace")
-
-                # Convert value as appropriate
-                if k in [FRAMES, SCALE, SIZE]:
-                    v = v.replace("*", ",")
-                    v = tuple(map(number, v.split(",")))
-                    if len(v) == 1:
-                        v = v[0]
-                elif k == MODE and v in OPEN:
-                    v, self.rawmode = OPEN[v]
-
-                # Add to dictionary. Note that COMMENT tags are
-                # combined into a list of strings.
-                if k == COMMENT:
-                    if k in self.info:
-                        self.info[k].append(v)
-                    else:
-                        self.info[k] = [v]
-                else:
-                    self.info[k] = v
-
-                if k in TAGS:
-                    n += 1
-
-            else:
-
+            if not m:
                 raise SyntaxError(
                     "Syntax error in IM header: " + s.decode("ascii", "replace")
                 )
+
+            k, v = m.group(1, 2)
+
+            # Don't know if this is the correct encoding,
+            # but a decent guess (I guess)
+            k = k.decode("latin-1", "replace")
+            v = v.decode("latin-1", "replace")
+
+            # Convert value as appropriate
+            if k in [FRAMES, SCALE, SIZE]:
+                v = v.replace("*", ",")
+                v = tuple(map(number, v.split(",")))
+                if len(v) == 1:
+                    v = v[0]
+            elif k == MODE and v in OPEN:
+                v, self.rawmode = OPEN[v]
+
+            # Add to dictionary. Note that COMMENT tags are
+            # combined into a list of strings.
+            if k == COMMENT:
+                if k in self.info:
+                    self.info[k].append(v)
+                else:
+                    self.info[k] = [v]
+            else:
+                self.info[k] = v
+
+            if k in TAGS:
+                n += 1
 
         if not n:
             raise SyntaxError("Not an IM file")
@@ -210,7 +207,7 @@ class ImImageFile(ImageFile.ImageFile):
         self.mode = self.info[MODE]
 
         # Skip forward to start of image data
-        while s and s[0:1] != b"\x1A":
+        while s and s[:1] != b"\x1A":
             s = self.fp.read(1)
         if not s:
             raise SyntaxError("File truncated")
@@ -286,11 +283,7 @@ class ImImageFile(ImageFile.ImageFile):
 
         self.frame = frame
 
-        if self.mode == "1":
-            bits = 1
-        else:
-            bits = 8 * len(self.mode)
-
+        bits = 1 if self.mode == "1" else 8 * len(self.mode)
         size = ((self.size[0] * bits + 7) // 8) * self.size[1]
         offs = self.__offset + frame * size
 

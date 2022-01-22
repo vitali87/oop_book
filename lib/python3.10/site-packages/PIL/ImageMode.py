@@ -35,28 +35,30 @@ def getmode(mode):
     global _modes
     if not _modes:
         # initialize mode cache
-        modes = {}
-        for m, (basemode, basetype, bands) in {
-            # core modes
-            "1": ("L", "L", ("1",)),
-            "L": ("L", "L", ("L",)),
-            "I": ("L", "I", ("I",)),
-            "F": ("L", "F", ("F",)),
-            "P": ("P", "L", ("P",)),
-            "RGB": ("RGB", "L", ("R", "G", "B")),
-            "RGBX": ("RGB", "L", ("R", "G", "B", "X")),
-            "RGBA": ("RGB", "L", ("R", "G", "B", "A")),
-            "CMYK": ("RGB", "L", ("C", "M", "Y", "K")),
-            "YCbCr": ("RGB", "L", ("Y", "Cb", "Cr")),
-            "LAB": ("RGB", "L", ("L", "A", "B")),
-            "HSV": ("RGB", "L", ("H", "S", "V")),
-            # extra experimental modes
-            "RGBa": ("RGB", "L", ("R", "G", "B", "a")),
-            "LA": ("L", "L", ("L", "A")),
-            "La": ("L", "L", ("L", "a")),
-            "PA": ("RGB", "L", ("P", "A")),
-        }.items():
-            modes[m] = ModeDescriptor(m, bands, basemode, basetype)
+        modes = {
+            m: ModeDescriptor(m, bands, basemode, basetype)
+            for m, (basemode, basetype, bands) in {
+                # core modes
+                "1": ("L", "L", ("1",)),
+                "L": ("L", "L", ("L",)),
+                "I": ("L", "I", ("I",)),
+                "F": ("L", "F", ("F",)),
+                "P": ("P", "L", ("P",)),
+                "RGB": ("RGB", "L", ("R", "G", "B")),
+                "RGBX": ("RGB", "L", ("R", "G", "B", "X")),
+                "RGBA": ("RGB", "L", ("R", "G", "B", "A")),
+                "CMYK": ("RGB", "L", ("C", "M", "Y", "K")),
+                "YCbCr": ("RGB", "L", ("Y", "Cb", "Cr")),
+                "LAB": ("RGB", "L", ("L", "A", "B")),
+                "HSV": ("RGB", "L", ("H", "S", "V")),
+                # extra experimental modes
+                "RGBa": ("RGB", "L", ("R", "G", "B", "a")),
+                "LA": ("L", "L", ("L", "A")),
+                "La": ("L", "L", ("L", "a")),
+                "PA": ("RGB", "L", ("P", "A")),
+            }.items()
+        }
+
         # mapping modes
         for i16mode in (
             "I;16",

@@ -79,10 +79,7 @@ class ContainerIO:
             read until end of region.
         :returns: An 8-bit string.
         """
-        if n:
-            n = min(n, self.length - self.pos)
-        else:
-            n = self.length - self.pos
+        n = min(n, self.length - self.pos) if n else self.length - self.pos
         if not n:  # EOF
             return b"" if "b" in self.fh.mode else ""
         self.pos = self.pos + n
