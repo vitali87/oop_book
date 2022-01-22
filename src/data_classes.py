@@ -28,6 +28,7 @@ class StockOrdinary:
     >>> s_ord
     <src.data_classes.StockOrdinary object at 0x7fe1ae55b580>
     """
+
     def __init__(
             self,
             name: str,

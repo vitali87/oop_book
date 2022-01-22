@@ -3,7 +3,7 @@ class BaseClass:
 
     def call_me(self) -> None:
         print("Calling method on BaseClass")
-        self.num_base_calls +=1
+        self.num_base_calls += 1
 
 
 class LeftSubclass(BaseClass):
@@ -24,7 +24,7 @@ class RightSubclass(BaseClass):
         self.num_right_calls += 1
 
 
-class SubClass(LeftSubclass,RightSubclass):
+class SubClass(LeftSubclass, RightSubclass):
     num_sub_calls = 0
 
     def call_me(self) -> None:

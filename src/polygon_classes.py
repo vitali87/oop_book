@@ -1,5 +1,6 @@
-from math import hypot
 from typing import Tuple, List, Optional, Iterable, Union
+
+from math import hypot
 
 
 class Point:
@@ -21,7 +22,7 @@ class Polygon:
 
     def perimeter(self) -> float:
         pairs = zip(self.vertices, self.vertices[1:] + self.vertices[:1])
-        return sum(p1.distance(p2) for p1,p2 in pairs)
+        return sum(p1.distance(p2) for p1, p2 in pairs)
 
 
 class Polygon_2:
@@ -30,7 +31,8 @@ class Polygon_2:
 
     def perimeter(self) -> float:
         pairs = zip(self.vertices, self.vertices[1:] + self.vertices[:1])
-        return sum(p1.distance(p2) for p1,p2 in pairs)
+        return sum(p1.distance(p2) for p1, p2 in pairs)
+
 
 Pair = Tuple[float, float]
 Point_or_Tuple = Union[Pair, Point]
@@ -49,4 +51,4 @@ class Polygon_3:
 
     def perimeter(self) -> float:
         pairs = zip(self.vertices, self.vertices[1:] + self.vertices[:1])
-        return sum(p1.distance(p2) for p1,p2 in pairs)
+        return sum(p1.distance(p2) for p1, p2 in pairs)

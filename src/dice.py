@@ -20,12 +20,12 @@ class Die(abc.ABC):
 
 class D4(Die):
     def roll(self) -> None:
-        self.face = random.choice((1,2,3,4))
+        self.face = random.choice((1, 2, 3, 4))
 
 
 class D6(Die):
     def roll(self) -> None:
-        self.face = random.randint(1,6)
+        self.face = random.randint(1, 6)
 
 
 class Dice(abc.ABC):
@@ -59,7 +59,7 @@ class YachtDice(Dice):
         return self
 
     def roll(self) -> None:
-        for n,d in enumerate(self.dice):
+        for n, d in enumerate(self.dice):
             if n not in self.saved:
                 d.roll()
             self.saved = set()
@@ -93,7 +93,7 @@ class DDice:
         return sum(d.face for d in self.dice) + self.adjust
 
     def __add__(self, die_class: Any) -> "DDice":
-        if isinstance(die_class, type) and issubclass(die_class,Die):
+        if isinstance(die_class, type) and issubclass(die_class, Die):
             new_classes = [type(d) for d in self.dice] + [die_class]
             new = DDice(*new_classes).plus(self.adjust)
             return new
@@ -105,7 +105,7 @@ class DDice:
             return NotImplemented
 
     def __radd__(self, die_class: Any) -> "DDice":
-        if isinstance(die_class, type) and issubclass(die_class,Die):
+        if isinstance(die_class, type) and issubclass(die_class, Die):
             new_classes = [die_class] + [type(d) for d in self.dice]
             new = DDice(*new_classes).plus(self.adjust)
             return new
@@ -130,9 +130,8 @@ class DDice:
         else:
             return NotImplemented
 
-
     def __iadd__(self, die_class: Any) -> "DDice":
-        if isinstance(die_class, type) and issubclass(die_class,Die):
+        if isinstance(die_class, type) and issubclass(die_class, Die):
             self.dice += [die_class]
             return self
         elif isinstance(die_class, int):
@@ -147,10 +146,10 @@ class DieMeta(abc.ABCMeta):
             metaclass: Type[type],
             name: str,
             bases: tuple[type, ...],
-            namespace: dict[str,Any],
+            namespace: dict[str, Any],
             **kwargs: Any) -> "DieMeta":
         if "roll" in namespace and not getattr(
-            namespace["roll"],"__isabstractmethod__", False
+                namespace["roll"], "__isabstractmethod__", False
         ):
             namespace.setdefault("logger", logging.getLogger((name)))
 
@@ -188,5 +187,4 @@ class DieLog(metaclass=DieMeta):
 class D6L(DieLog):
     def roll(self) -> None:
         """Some documentation on D6L"""
-        self.face = random.randrange(1,7)
-
+        self.face = random.randrange(1, 7)

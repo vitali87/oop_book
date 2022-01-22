@@ -1,7 +1,7 @@
 import re
+from pathlib import Path
 
 from src.zip_processor import ZipProcessor
-from pathlib import Path
 
 
 class TextTweaker(ZipProcessor):

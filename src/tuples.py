@@ -2,30 +2,36 @@ import datetime
 from typing import NamedTuple
 
 
-def middle(stock,date):
+def middle(stock, date):
+    """
+    >>> middle(("AAPL",123.52, 53.15, 137.98),datetime.date(2020,12,4))
+    """
     symbol, current, high, low = stock
-    return (high + low)/2, date
-
-
-# Example 1
-""" 
->>> middle(("AAPL",123.52, 53.15, 137.98),datetime.date(2020,12,4)) 
-"""
+    return (high + low) / 2, date
 
 
 def high(stock):
+    """
+    >>> s = ('AAPL', 123.52, 53.15, 137.98)
+    >>> high(s)
+    """
     symbol, current, high, low = stock
     return high
 
 
-# Example 2
-"""
->>> s = ('AAPL', 123.52, 53.15, 137.98)
->>> high(s)
-"""
-
-
 class Stock(NamedTuple):
+    """
+    >>> Stock("AAPL", 123.52, 53.15, 137.98)
+    >>> s2 = Stock("AAPL", 123.52, high=53.15, low=137.98)
+    >>> t = ("Relayer",["Gates of Delirium", "Sound Chaser"])
+    >>> t[1]
+    ['Gates of Delirium', 'Sound Chaser']
+    >>> t[1].append("To Be Over")
+    >>> t[1]
+    ['Gates of Delirium', 'Sound Chaser', 'To Be Over']
+    >>> s = Stock("AAPL", 123.52, 53.15, 137.98)
+    >>> s.middle
+    """
     symbol: str
     current: float
     high: float
@@ -33,19 +39,10 @@ class Stock(NamedTuple):
 
     @property
     def middle(self) -> float:
-        return (self.high + self.low)/2
+        return (self.high + self.low) / 2
 
 
-# Example 3
-"""
->>> Stock("AAPL", 123.52, 53.15, 137.98)
->>> s2 = Stock("AAPL", 123.52, high=53.15, low=137.98)
->>> t = ("Relayer",["Gates of Delirium", "Sound Chaser"])
->>> t[1]
-['Gates of Delirium', 'Sound Chaser']
->>> t[1].append("To Be Over")
->>> t[1]
-['Gates of Delirium', 'Sound Chaser', 'To Be Over']
->>> s = Stock("AAPL", 123.52, 53.15, 137.98)
->>> s.middle
-"""
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()

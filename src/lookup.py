@@ -1,7 +1,8 @@
 from __future__ import annotations
-from collections import abc
-from typing import Any, Protocol, overload, Union, Iterator, Iterable,Sequence,Mapping
+
 import bisect
+from collections import abc
+from typing import Any, Protocol, overload, Union, Iterator, Iterable, Sequence
 
 
 class Comparable(Protocol):
@@ -18,7 +19,7 @@ class Comparable(Protocol):
     def __gt__(self, other: Any) -> bool: ...
 
 
-BaseMapping = abc.Mapping[Comparable,Any]
+BaseMapping = abc.Mapping[Comparable, Any]
 
 
 class Lookup(BaseMapping):
@@ -38,12 +39,12 @@ class Lookup(BaseMapping):
 
     def __init__(
             self,
-            source: Union[Iterable[tuple[Comparable,Any]],BaseMapping,None]
+            source: Union[Iterable[tuple[Comparable, Any]], BaseMapping, None]
     ) -> None:
         sorted_pairs: Sequence[tuple[Comparable, Any]]
-        if isinstance(source,Sequence):
+        if isinstance(source, Sequence):
             sorted_pairs = sorted(source)
-        elif isinstance(source,abc.Mapping):
+        elif isinstance(source, abc.Mapping):
             sorted_pairs = sorted(source.items())
         else:
             sorted_pairs = []

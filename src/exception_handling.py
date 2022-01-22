@@ -49,7 +49,7 @@ def exception_args():
         print(f"The exception arguments were {e.args}")
 
 
-some_exceptions = [ValueError,TypeError,IndexError,None]
+some_exceptions = [ValueError, TypeError, IndexError, None]
 
 for choice in some_exceptions:
     try:
@@ -79,7 +79,7 @@ def divide_with_exception(dividend: int,
 
 
 def divide_with_if(dividend: int,
-                          divisor: int) -> None:
+                   divisor: int) -> None:
     if divisor == 0:
         print("You can't divide by zero")
     else:

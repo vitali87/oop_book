@@ -35,36 +35,44 @@ class Point:
         self.y = y
 
     def reset(self) -> None:
-        '''
+        """
         Reset the point to the origin: 0,0
-        '''
+        :return:
+        """
         self.move(0, 0)
 
     def move(self, x: float, y: float) -> None:
-        '''
-        Move the point to a new location in two-dimensional
-        space.
+        """
+        Move the point to a new location
+        in two-dimensional space.
 
-        :param x: float x-coordinate
-        :param y: float y-coordinate
-        '''
+        :param
+        x: float
+        x - coordinate
+        :param
+        y: float
+        y - coordinate
+        """
         self.x = x
         self.y = y
 
     def reset(self) -> None:
-        '''
-        Reset the point to the origin: 0,0
-        '''
+        """
+        Reset the point to the origin: 0, 0
+        """
+
         self.move(0, 0)
 
     def calculate_distance(self, p: "Point") -> float:
-        '''
-        Calculate the Euclidean distance between this point 
-        and the second point passed as a parameter.
+        """
+        Calculate the Euclidean distance between
+        this point and the second point passed as a
+        parameter.
 
-        :param p: Point instance
+        :param
+        p: Point instance
         :return float distance
-        '''
+        """
         return math.hypot(self.x - p.x, self.y - p.y)
 
 

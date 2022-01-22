@@ -1,4 +1,4 @@
-def odd(n:int) -> bool:
+def odd(n: int) -> bool:
     return n % 2 != 0
 
 
