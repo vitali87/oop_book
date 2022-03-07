@@ -100,4 +100,75 @@ class CSVIrisReader():
         return f"{self.__class__.__name__}"
 
 
+class CSVIrisReader2():
+    '''
+    Attribute Information:
+        1. sepal length in cm
+        2. sepal width in cm
+        3. petal length in cm
+        4. petal width in cm
+        5. class:
+            -- Iris Setosa
+            -- Iris Versicolour
+            -- Iris Virginica
+    '''
 
+    def __init__(
+            self,
+            source: Path
+    ) -> None:
+        """
+        Constructor for CSVIrisReader2
+        """
+        self.source = source
+
+    def data_iter(self) -> Iterator[dict[str, str]]:
+        '''
+        Responsible for  yields individual dictionary objects
+        '''
+        with self.source.open() as source_file:
+            reader = csv.reader(source_file)
+            for row in reader:
+                yield dict(
+                    sepal_length=row[0],
+                    sepal_width=row[1],
+                    petal_length=row[2],
+                    petal_width=row[3],
+                    species=row[4]
+                )
+
+    @property
+    def source(self) -> Path:
+        '''
+        Responsible for docstring_property
+        '''
+        return self.source
+
+    @property.setter
+    def source(self, value):
+        '''
+        Responsible for setting value of source
+        '''
+        self.source = value
+
+    @property.deleter
+    def source(self):
+        '''
+        Responsible for deleting source
+        '''
+        print('Deleting f"self.source"')
+        del self.source
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}"
+
+
+from typing import TypedDict
+
+
+class SampleDict(TypedDict, total=True):
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
+    species: str
