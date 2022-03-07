@@ -138,25 +138,25 @@ class CSVIrisReader2():
                 )
 
     @property
-    def property(self) -> Path:
+    def source(self) -> Path:
         '''
         Responsible for docstring_property
         '''
         return self.source
 
     @property.setter
-    def property(self, value):
+    def source(self, value):
         '''
-        Responsible for setting value of property
+        Responsible for setting value of source
         '''
         self.source = value
 
     @property.deleter
-    def property(self):
+    def source(self):
         '''
-        Responsible for deleting property
+        Responsible for deleting source
         '''
-        print('Deleting..')
+        print('Deleting f"self.source"')
         del self.source
 
     def __repr__(self) -> str:
