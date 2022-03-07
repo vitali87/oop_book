@@ -160,4 +160,15 @@ class CSVIrisReader2():
         del self.source
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}"branch
+        return f"{self.__class__.__name__}"
+
+
+from typing import TypedDict
+
+
+class SampleDict(TypedDict, total=True):
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
+    species: str
