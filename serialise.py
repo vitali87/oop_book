@@ -1,6 +1,7 @@
 import csv
 import datetime
 import json
+import logging
 import pickle
 from pathlib import Path
 from threading import Timer
@@ -198,6 +199,32 @@ class NDJSONIrisReader:
             yield sample
 
 
+IRIS_SCHEMA = {
+    "$schema": "https://json-schema.org/draft/2019-09/hyper-schema",
+    "title": "Iris Data Schema",
+    "description": "Schema of Bezdek Iris data",
+    "type": "object",
+    "properties": {
+        "sepal_length": {
+            "type": "number", "description": "Sepal Length in cm"},
+        "sepal_width": {
+            "type": "number", "description": "Sepal Width in cm"},
+        "petal_length": {
+            "type": "number", "description": "Petal Length in cm"},
+        "petal_width": {
+            "type": "number", "description": "Petal Width in cm"},
+        "species": {
+            "type": "string",
+            "description": "class",
+            "enum": [
+                "Iris-setosa", "Iris-versicolor", "Iris-virginica"],
+        },
+    },
+    "required": [
+        "sepal_length", "sepal_width", "petal_length", "petal_width"],
+}
+
+
 class ValidatingNDJSONIrisReader:
     def __init__(self, source: Path, schema: dict[str, Any]) -> None:
         self.source = source
@@ -210,4 +237,4 @@ class ValidatingNDJSONIrisReader:
                 if self.validator.is_valid(sample):
                     yield sample
                 else:
-                    print(f'Invalid {sample}')
+                    logging.error(f'Invalid {sample}')
